@@ -12,6 +12,8 @@
 ##' @param args optional arguments supplied to establish settings
 ##' @return NULL 
 ##' @author Murray Logan
+##' @export
+##' @import status
 start_matter <- function(args = commandArgs()) {
   status::status_set_stage(stage = 1, title = "Prepare environment")   ## set the analysis stage
   initialize()                                                         ## create the status list
