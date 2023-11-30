@@ -1,5 +1,6 @@
 library(shiny)
 library(shinydashboard)
+library(shinyWidgets)
 library(shinyBS)
 library(shinyTree)
 library(fansi)
