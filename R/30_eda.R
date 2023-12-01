@@ -91,7 +91,7 @@ eda_type_temporal <- function(data) {
       mutate(Plot = list({
         data |>
                 ggplot(aes(y = Site, x = Acquire_date_time)) +
-                geom_line() +
+                ## geom_line(color = "gray50") +
                 geom_point(aes(colour = Baseline), fill = NA, shape = 16) +
                 coord_cartesian(xlim = c(unique(data$Date_min), unique(data$Date_max))) +
                 facet_grid(. ~ Var, scales = "free_y", space = "free_y") +

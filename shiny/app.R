@@ -6,6 +6,7 @@ library(shinyTree)
 library(fansi)
 library(DT)
 library(reactable)
+library(leaflet)
 
 
 unloadNamespace("sedMod")
