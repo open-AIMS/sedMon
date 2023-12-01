@@ -47,6 +47,44 @@ have been defined (when the left point of a sequence is red)."
   })
 
   
+  ## Type Temporal EDA
+  plots_type <- sedMod::eda_type_temporal(data)
+  output$eda_type_temporal <- renderUI({
+    thetabs <- lapply(1:nrow(plots_type),
+      function(x) {
+        nm <- paste0("eda_type_temporal_plot_", x)
+        tabPanel(
+          title = paste0(plots_type$ZoneName[x], ": ", plots_type$Type[x]),
+          fillRow(
+                  plotOutput(nm, height = "750px", width = "750px"),
+                  box(
+                          textOutput(paste0(nm, "_caption"))
+                  )
+          )
+        )
+      })
+    do.call(tabsetPanel, thetabs)
+  })
+  observe({
+    lapply(1:nrow(plots_type), function(x) {
+      output[[paste0("eda_type_temporal_plot_", x)]] <- renderPlot({
+              plots_type[x, "Plot"][[1]][[1]]
+      })
+      output[[paste0("eda_type_temporal_plot_", x, "_caption")]] <- renderText(
+        paste0(
+          "The figure to the left depicts the temporal sampling design
+focussing on \"Sites\" that were first monitored in the ", plots_type$Initial_quarter[x],
+" semester. The y-axis (rows) represent the Sampling sites (based on the Site names
+they were first assigned).  Blue points represent the samples collected
+that are considered \"Baseline\" or \"Reference\" samples from which
+subsequent samples at the corresponding site are gauged.  Red points
+represent non-\"Baseline\" samples. Points are jointed by lines to help
+identify discontinued sampling (where no line exists) and where no Baselines
+have been defined (when the left point of a sequence is red)."
+)
+      )
+    })
+  })
 })
 
 
