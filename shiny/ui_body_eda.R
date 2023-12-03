@@ -43,7 +43,11 @@ eda_tab <- tabItem(
       title = "Spatial Type",
       icon = icon("map"),
       id = "eda_type_spatial_tab",
-      uiOutput("eda_type_spatial")
+      ## uiOutput("eda_type_spatial")
+      selectInput("var_selector", "Select Variable:", choices = unique(df_sf$Var)),
+      selectInput("value_type_selector", "Select value type:", choices = unique(df_sf$Value_type)),
+      sliderInput("year_selector", "Select Year:", min = min(df_sf$Year_cal), max = max(df_sf$Year_cal), value = max(df_sf$Year_cal)),
+      leafletOutput("eda_map", width = "600px", height = "600px")
     )
   )
 )

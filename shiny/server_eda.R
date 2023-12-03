@@ -98,6 +98,76 @@ represent non-\"Baseline\" samples. "
       )
     })
   })
+
+
+
+
+ filtered_data <- reactive({
+    df_sf |> filter(
+      Var == input$var_selector,
+      Year_cal == input$year_selector,
+      Value_type == input$value_type_selector
+    )
+  })
+
+  spatial <- readRDS(file = paste0(data_path, "primary/spatial.RData"))
+  data <- readRDS(file = paste0(data_path, "processed/data.RData"))
+  df_sf <- data |>
+    group_by(Site, Var, Year_cal, Value_type) |>
+    summarise(across(c(Longitude, Latitude, Values),
+      list(~ mean(.x, na.rm = TRUE)),
+      .names = "{.col}"
+    )) |>
+    st_as_sf(coords = c('Longitude', 'Latitude'), remove = FALSE, crs =  st_crs(4326)) 
+
+  output$eda_map <- renderLeaflet({
+    pal <- colorNumeric(
+      palette = "Blues",
+      domain = filtered_data()$Values
+    )
+    spatial |>
+      st_transform(crs = st_crs(4326)) |>
+      leaflet() |>
+      ## addProviderTiles(providers$CartoDB.PositronNoLabels, options = providerTileOptions(noWrap = TRUE), group = "Carto")|>
+      addTiles(group = "Basemap") |>
+      addPolygons(
+        group = "Zones",
+        weight = 1,
+        color = "blue",
+        fillOpacity = 0.5, fill = TRUE, fillColor = "white",
+        stroke = TRUE) |>
+      addScaleBar(options = scaleBarOptions(
+        maxWidth = 100,
+        metric = TRUE,
+        imperial = TRUE,
+        updateWhenIdle = TRUE
+      )) |>
+      addCircles(
+        data = filtered_data(),
+        color = "black",
+              stroke = TRUE,
+              fillColor = ~ pal(Values),
+            weight =  1,
+              radius = 100,
+              ## radius = getRadius(map = input$eda_map),
+        fillOpacity = 1,
+        group = "Sites"
+      ) |>
+      addLegend(
+              data = filtered_data(),
+              position = "bottomright", pal = pal, values = ~Values,
+              title = input$var_selector,
+              ## labFormat = labelFormat(prefix = "$"),
+              opacity = 1
+      ) |>
+      addLayersControl(
+        ## baseGroups = c("Carto"),
+        overlayGroups = c("Zones", "Sites", "Basemap"),
+        options = layersControlOptions(collapsed = FALSE)
+      )
+    ## addControl(position = "topleft")
+  })
+  ## observeEvent(input$var_selector, updateLeafletProxy(output$eda_map))
 })
 
 
