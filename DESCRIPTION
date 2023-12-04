@@ -5,8 +5,28 @@ Authors@R:
     person("Murray", "Logan", , "i.obesulus@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: End to end data processing and analysis for the Darwin Harbour Sediment Monitoring.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Depends:
+    R (>= 4.1),
+    cli,
+    crayon,
+    dplyr,
+    lubridate,
+    tidyr,
+    readxl,
+    validate,
+    sf,
+    status
+License: use_mit_license()
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports:
+    cli,
+    crayon,
+    dplyr,
+    lubridate,
+    tidyr,
+    readxl,
+    validate,
+    sf,
+    status

@@ -69,7 +69,7 @@ load_packages <- function() {
     pkgs <- c(
       "tidyverse", "testthat", "cli", "rlang", "crayon",
       "assertthat", "lubridate", "rmarkdown", "bookdown",
-      "sf", "validate"
+      "sf", "validate", "status"
     )
 
     for (p in pkgs) {
